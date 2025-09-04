@@ -10,26 +10,25 @@
 <body>
   <header>
     <h1>🛒 BazarList</h1>
-    <p>দৈনন্দিন বাজার তালিকা রাখুন সহজে।</p>
+    <p>দৈনন্দিন বাজারের তালিকা রাখুন সহজে।</p>
   </header>
 
-  <!-- Add List Section -->
-  <div class="add-list">
-    <input type="text" id="listName" placeholder="লিস্টের নাম লিখুন">
-    <button id="addListBtn">➕ লিস্ট যোগ করুন</button>
-  </div>
-
-  <!-- Backup/Restore -->
-  <div class="backup-section">
-    <button onclick="exportBackup()">📂 Backup Export (.json)</button>
-    <input type="file" id="importFile" accept=".json" onchange="importBackup(event)" hidden>
-    <button onclick="document.getElementById('importFile').click()">📂 Import Restore (.json)</button>
-  </div>
-
-  <!-- Product Section -->
   <main>
+    <!-- নতুন লিস্ট -->
+    <div class="add-list">
+      <input type="text" id="listNameInput" placeholder="লিস্টের নাম লিখুন">
+      <button onclick="addList()">➕ লিস্ট যোগ করুন</button>
+    </div>
+
+    <!-- Backup/Restore -->
+    <div class="backup-section">
+      <button onclick="exportBackup()">📂 Backup Export (.json)</button>
+      <input type="file" id="importFile" accept=".json" onchange="importBackup(event)" hidden>
+      <button onclick="document.getElementById('importFile').click()">📂 Import Restore (.json)</button>
+    </div>
+
+    <!-- লিস্ট দেখানোর জায়গা -->
     <div id="listsContainer"></div>
-    <h3 id="totalAmount">মোট: 0 টাকা</h3>
   </main>
 
   <footer>
