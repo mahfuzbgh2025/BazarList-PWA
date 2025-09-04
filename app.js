@@ -95,7 +95,7 @@ function renderLists() {
     div.innerHTML = `
       <h3>📂 ${listName}</h3>
       ${productsHTML || "<p>কোনো পণ্য যোগ করা হয়নি</p>"}
-      <p><strong>লিস্ট টোটাল: ${total}৳</strong></p>
+      <p><strong>মোট: ${total}৳</strong></p>
       <input type="text" id="productName-${listName}" placeholder="পণ্যের নাম">
       <input type="text" id="productQty-${listName}" placeholder="পরিমাণ (কেজি/টি)">
       <input type="number" id="productPrice-${listName}" placeholder="দাম (৳)">
