@@ -1,88 +1,136 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const addListBtn = document.getElementById("addListBtn");
-  const listNameInput = document.getElementById("listName");
-  const listsContainer = document.getElementById("listsContainer");
-  const totalAmountEl = document.getElementById("totalAmount");
+let lists = JSON.parse(localStorage.getItem("lists")) || {};
 
-  let lists = JSON.parse(localStorage.getItem("bazarLists")) || [];
+function saveData() {
+  localStorage.setItem("lists", JSON.stringify(lists));
+  renderLists();
+}
 
-  function renderLists() {
-    listsContainer.innerHTML = "";
-    let total = 0;
+function addList() {
+  const name = document.getElementById("listNameInput").value.trim();
+  if (name && !lists[name]) {
+    lists[name] = [];
+    document.getElementById("listNameInput").value = "";
+    saveData();
+  }
+}
 
-    lists.forEach((item, index) => {
-      total += item.price;
+function addProduct(listName) {
+  const product = document.getElementById(`productName-${listName}`).value.trim();
+  const qty = document.getElementById(`productQty-${listName}`).value.trim();
+  const price = parseFloat(document.getElementById(`productPrice-${listName}`).value);
 
-      const div = document.createElement("div");
-      div.className = "list-item";
-      div.innerHTML = `
-        <strong>${item.name}</strong> - ${item.quantity} (${item.price} টাকা)
-        <button onclick="editItem(${index})">✏️ Edit</button>
-        <button onclick="deleteItem(${index})">❌ Delete</button>
-      `;
-      listsContainer.appendChild(div);
-    });
-
-    totalAmountEl.textContent = `মোট: ${total} টাকা`;
-    localStorage.setItem("bazarLists", JSON.stringify(lists));
+  if (!product || !qty || isNaN(price)) {
+    alert("সব ঘর পূরণ করুন (নাম, পরিমাণ, দাম)");
+    return;
   }
 
-  addListBtn.addEventListener("click", () => {
-    const name = listNameInput.value.trim();
-    if (!name) {
-      alert("লিস্টের নাম লিখুন!");
-      return;
-    }
-
-    const quantity = prompt("পরিমাণ লিখুন (যেমন: 2 কেজি)") || "1";
-    const price = parseInt(prompt("মূল্য লিখুন (টাকায়)") || "0");
-
-    lists.push({ name, quantity, price });
-    listNameInput.value = "";
-    renderLists();
+  lists[listName].push({
+    product,
+    qty,
+    price,
+    date: new Date().toISOString().split("T")[0],
   });
 
-  // Delete Item
-  window.deleteItem = (index) => {
-    if (confirm("আপনি কি মুছে ফেলতে চান?")) {
-      lists.splice(index, 1);
-      renderLists();
+  document.getElementById(`productName-${listName}`).value = "";
+  document.getElementById(`productQty-${listName}`).value = "";
+  document.getElementById(`productPrice-${listName}`).value = "";
+
+  saveData();
+}
+
+function deleteProduct(listName, index) {
+  lists[listName].splice(index, 1);
+  saveData();
+}
+
+function editProduct(listName, index) {
+  const item = lists[listName][index];
+  const newProduct = prompt("পণ্যের নাম পরিবর্তন করুন:", item.product);
+  const newQty = prompt("পরিমাণ পরিবর্তন করুন:", item.qty);
+  const newPrice = parseFloat(prompt("দাম পরিবর্তন করুন:", item.price));
+  if (newProduct && newQty && !isNaN(newPrice)) {
+    lists[listName][index] = {
+      product: newProduct,
+      qty: newQty,
+      price: newPrice,
+      date: new Date().toISOString().split("T")[0],
+    };
+    saveData();
+  }
+}
+
+function deleteList(listName) {
+  delete lists[listName];
+  saveData();
+}
+
+function calculateTotal(listName) {
+  return lists[listName].reduce((sum, item) => sum + item.price, 0);
+}
+
+function renderLists() {
+  const container = document.getElementById("listsContainer");
+  container.innerHTML = "";
+
+  for (const listName in lists) {
+    const div = document.createElement("div");
+    div.className = "list-item";
+
+    const productsHTML = lists[listName]
+      .map(
+        (item, i) => `
+        <div class="product-row">
+          <span>📌 <strong>${item.product}</strong> (${item.qty}) - ${item.price}৳ <small>[${item.date}]</small></span>
+          <div>
+            <button onclick="editProduct('${listName}', ${i})">✏️ এডিট</button>
+            <button onclick="deleteProduct('${listName}', ${i})">🗑️ ডিলিট</button>
+          </div>
+        </div>
+      `
+      )
+      .join("");
+
+    const total = calculateTotal(listName);
+
+    div.innerHTML = `
+      <h3>📂 ${listName}</h3>
+      ${productsHTML || "<p>কোনো পণ্য যোগ করা হয়নি</p>"}
+      <p><strong>লিস্ট টোটাল: ${total}৳</strong></p>
+      <input type="text" id="productName-${listName}" placeholder="পণ্যের নাম">
+      <input type="text" id="productQty-${listName}" placeholder="পরিমাণ (কেজি/টি)">
+      <input type="number" id="productPrice-${listName}" placeholder="দাম (৳)">
+      <button onclick="addProduct('${listName}')">➕ প্রোডাক্ট যোগ করুন</button>
+      <br>
+      <button onclick="deleteList('${listName}')">❌ লিস্ট মুছুন</button>
+      <hr>
+    `;
+    container.appendChild(div);
+  }
+}
+
+function exportBackup() {
+  const data = JSON.stringify(lists);
+  const blob = new Blob([data], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "bazarlist-backup.json";
+  a.click();
+}
+
+function importBackup(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      lists = JSON.parse(e.target.result);
+      saveData();
+    } catch (err) {
+      alert("Invalid JSON file");
     }
   };
+  reader.readAsText(file);
+}
 
-  // Edit Item
-  window.editItem = (index) => {
-    const item = lists[index];
-    const newName = prompt("নতুন নাম লিখুন:", item.name) || item.name;
-    const newQuantity = prompt("পরিমাণ ঠিক করুন:", item.quantity) || item.quantity;
-    const newPrice = parseInt(prompt("নতুন মূল্য:", item.price)) || item.price;
-
-    lists[index] = { name: newName, quantity: newQuantity, price: newPrice };
-    renderLists();
-  };
-
-  // Backup Export
-  window.exportBackup = () => {
-    const blob = new Blob([JSON.stringify(lists)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "bazarlist_backup.json";
-    a.click();
-  };
-
-  // Import Backup
-  window.importBackup = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      lists = JSON.parse(e.target.result);
-      renderLists();
-    };
-    reader.readAsText(file);
-  };
-
-  renderLists();
-});
+renderLists();
