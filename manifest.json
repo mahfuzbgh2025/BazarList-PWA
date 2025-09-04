@@ -1,0 +1,40 @@
+{
+  "name": "বাজারলিষ্ট",
+  "short_name": "বাজারলিষ্ট",
+  "description": "দৈনন্দিন বাজার তালিকা, মোট খরচ, ব্যাকআপ/রিস্টোর – অফলাইনে কাজ করে।",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#1c2e4a",
+  "theme_color": "#0f4c81",
+  "orientation": "portrait",
+  "lang": "bn",
+  "dir": "auto",
+  "categories": ["productivity", "shopping", "utilities"],
+  "icons": [
+    {
+      "src": "AppImages/android/android-launchericon-192-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "AppImages/android/android-launchericon-512-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "AppImages/android/android-launchericon-192-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "AppImages/android/android-launchericon-512-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
