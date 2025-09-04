@@ -1,144 +1,88 @@
-/* Global Reset */
-* {
+/* ব্যাকগ্রাউন্ডে আপনার logo.png ব্যবহার */
+body {
+  font-family: "Noto Sans Bengali", sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Arial, sans-serif;
-}
-
-/* Body */
-body {
-  background: linear-gradient(135deg, #1c2e4a, #0f4c81);
-  color: #fff;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Header */
-header {
-  text-align: center;
-  padding: 20px;
-  background: #0f4c81;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-header h1 {
-  font-size: 2rem;
-  margin-bottom: 5px;
-}
-header p {
-  opacity: 0.9;
-}
-
-/* Main */
-main {
-  flex: 1;
-  padding: 20px;
-  max-width: 900px;
-  margin: auto;
-}
-
-/* Input and Buttons */
-input, button {
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  margin: 5px 0;
-  font-size: 1rem;
-}
-input {
-  width: calc(100% - 20px);
-  background: #2c3e50;
-  color: #fff;
-  border: 1px solid #34495e;
-}
-input:focus {
-  outline: none;
-  border-color: #ff6b6b;
-  box-shadow: 0 0 4px rgba(255,107,107,0.6);
-}
-button {
-  background: #ff6b6b;
+  background: url("logo.png") no-repeat center center fixed;
+  background-size: cover;
   color: white;
+  min-height: 100vh;
+}
+
+header {
+  background: rgba(0, 0, 50, 0.85);
+  padding: 20px;
+  text-align: center;
+  border-radius: 0 0 10px 10px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+main {
+  padding: 15px;
+}
+
+.add-list input {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+}
+
+.add-list button {
+  padding: 8px 12px;
+  margin-left: 5px;
+  background: crimson;
+  color: white;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  transition: all 0.2s;
-}
-button:hover {
-  background: #e63946;
-  transform: translateY(-2px);
 }
 
-/* Sections */
-.add-list, .backup-section, .pdf-section {
-  margin-bottom: 20px;
-  text-align: center;
-}
-.add-list input, .add-list button {
+.backup-section button {
+  padding: 8px 12px;
   margin: 5px;
+  background: orange;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-/* List Container */
 .list {
-  background: rgba(255,255,255,0.1);
-  padding: 15px;
-  margin-bottom: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-.list h3 {
-  color: #ffcc00;
-  margin-bottom: 10px;
-}
-.list strong {
-  color: #4ecdc4;
-}
-.list hr {
-  margin-top: 15px;
-  border: 0;
-  border-top: 1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.6);
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 8px;
 }
 
-/* Product Rows */
-.list div {
-  margin: 6px 0;
+.list h2 {
+  margin: 0;
+  color: #ffd700;
 }
+
 .list button {
-  margin-left: 8px;
-  background: #34495e;
-}
-.list button:hover {
-  background: #2c3e50;
-}
-
-/* Totals */
-h2 {
-  text-align: center;
-  margin-top: 20px;
-  color: #ffcc00;
+  margin-left: 5px;
+  padding: 5px 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-/* Footer */
-footer {
-  text-align: center;
-  padding: 15px;
-  background: #1a2530;
-  font-size: 0.9rem;
-  border-top: 1px solid #34495e;
+.list ul {
+  list-style: none;
+  padding: 0;
 }
-footer p {
+
+.list li {
   margin: 5px 0;
-  opacity: 0.8;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 1.5rem;
-  }
-  input {
-    width: 100%;
-  }
-  .list {
-    padding: 10px;
-  }
+footer {
+  background: rgba(0,0,50,0.85);
+  text-align: center;
+  padding: 10px;
+  margin-top: 20px;
 }
