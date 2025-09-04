@@ -6,9 +6,12 @@
   <title>BazarList</title>
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
+  <!-- jsPDF লাইব্রেরি -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
   <header>
+    <img src="logo.png" alt="BazarList Logo" class="logo">
     <h1>🛒 BazarList</h1>
     <p>দৈনন্দিন বাজারের তালিকা রাখুন সহজে।</p>
   </header>
@@ -25,7 +28,7 @@
       <button onclick="exportBackup()">📂 Backup Export (.json)</button>
       <input type="file" id="importFile" accept=".json" onchange="importBackup(event)" hidden>
       <button onclick="document.getElementById('importFile').click()">📂 Import Restore (.json)</button>
-      <button onclick="downloadPDF()">📑 Download PDF</button>
+      <button onclick="downloadPDF()">📄 Download PDF</button>
     </div>
 
     <!-- লিস্ট দেখানোর জায়গা -->
@@ -36,13 +39,7 @@
     <p>© 2025 BazarList | Developed by Mahfuz Bgh</p>
   </footer>
 
-  <!-- jsPDF লাইব্রেরি -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-  <!-- মূল অ্যাপ -->
   <script src="app.js"></script>
-
-  <!-- সার্ভিস ওয়ার্কার -->
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register("sw.js")
