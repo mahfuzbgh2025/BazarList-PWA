@@ -1,152 +1,88 @@
 document.addEventListener("DOMContentLoaded", () => {
-  let lists = JSON.parse(localStorage.getItem("bazarLists")) || [];
-  renderLists();
-
-  const listsContainer = document.getElementById("listsContainer");
+  const addListBtn = document.getElementById("addListBtn");
   const listNameInput = document.getElementById("listName");
+  const listsContainer = document.getElementById("listsContainer");
+  const totalAmountEl = document.getElementById("totalAmount");
 
-  // ✅ নতুন লিস্ট তৈরি
-  window.createList = () => {
-    const name = listNameInput.value.trim();
-    if (!name) {
-      alert("দয়া করে লিস্টের নাম লিখুন");
-      return;
-    }
-    lists.push({ id: Date.now(), name, items: [] });
-    listNameInput.value = "";
-    saveLists();
-    renderLists();
-  };
+  let lists = JSON.parse(localStorage.getItem("bazarLists")) || [];
 
-  // ✅ Render Lists & Items
   function renderLists() {
     listsContainer.innerHTML = "";
-    let totalAmount = 0;
+    let total = 0;
 
-    lists.forEach((list) => {
+    lists.forEach((item, index) => {
+      total += item.price;
+
       const div = document.createElement("div");
-      div.className = "list";
-
-      const h2 = document.createElement("h2");
-      h2.textContent = list.name;
-      div.appendChild(h2);
-
-      // ➕ Add Item Form
-      const form = document.createElement("form");
-      form.className = "item-form";
-      form.innerHTML = `
-        <input type="text" placeholder="পণ্যের নাম" required>
-        <input type="date" required>
-        <input type="number" placeholder="দাম (৳)" required>
-        <input type="number" step="0.1" placeholder="পরিমাণ (কেজি/লিটার)">
-        <button type="submit">➕</button>
+      div.className = "list-item";
+      div.innerHTML = `
+        <strong>${item.name}</strong> - ${item.quantity} (${item.price} টাকা)
+        <button onclick="editItem(${index})">✏️ Edit</button>
+        <button onclick="deleteItem(${index})">❌ Delete</button>
       `;
-      div.appendChild(form);
-
-      const ul = document.createElement("ul");
-      div.appendChild(ul);
-
-      // Render Items
-      list.items.forEach((item) => {
-        totalAmount += item.amount;
-        const li = document.createElement("li");
-        li.innerHTML = `
-          <div>
-            <strong>${item.name}</strong> (${item.date}) - ৳${item.amount}
-            ${item.quantity ? `, ${item.quantity} কেজি` : ""}
-          </div>
-          <div>
-            <button class="edit">✏️</button>
-            <button class="delete">🗑️</button>
-          </div>
-        `;
-
-        // Edit Item
-        li.querySelector(".edit").addEventListener("click", () => {
-          const newName = prompt("পণ্যের নাম পরিবর্তন করুন:", item.name);
-          if (newName !== null) item.name = newName;
-
-          const newDate = prompt("তারিখ পরিবর্তন করুন:", item.date);
-          if (newDate !== null) item.date = newDate;
-
-          const newAmount = prompt("দাম পরিবর্তন করুন (৳):", item.amount);
-          if (newAmount !== null) item.amount = parseFloat(newAmount) || item.amount;
-
-          const newQty = prompt("পরিমাণ পরিবর্তন করুন (কেজি/লিটার):", item.quantity);
-          if (newQty !== null) item.quantity = parseFloat(newQty) || item.quantity;
-
-          saveLists();
-          renderLists();
-        });
-
-        // Delete Item
-        li.querySelector(".delete").addEventListener("click", () => {
-          if (confirm("আপনি কি নিশ্চিত যে এই আইটেম মুছতে চান?")) {
-            list.items = list.items.filter((i) => i !== item);
-            saveLists();
-            renderLists();
-          }
-        });
-
-        ul.appendChild(li);
-      });
-
-      // Add Item Submit
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const [name, date, amount, qty] = form.querySelectorAll("input");
-        const newItem = {
-          id: Date.now(),
-          name: name.value,
-          date: date.value,
-          amount: parseFloat(amount.value),
-          quantity: parseFloat(qty.value) || 0,
-        };
-        list.items.push(newItem);
-        saveLists();
-        renderLists();
-        form.reset();
-      });
-
       listsContainer.appendChild(div);
     });
 
-    // ✅ মোট খরচ দেখানো
-    const totalDiv = document.createElement("div");
-    totalDiv.className = "total-container";
-    totalDiv.textContent = `মোট খরচ: ৳${totalAmount}`;
-    listsContainer.appendChild(totalDiv);
-  }
-
-  // ✅ Save to LocalStorage
-  function saveLists() {
+    totalAmountEl.textContent = `মোট: ${total} টাকা`;
     localStorage.setItem("bazarLists", JSON.stringify(lists));
   }
 
-  // ✅ Export Backup
-  window.exportBackup = () => {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(lists));
-    const dl = document.createElement("a");
-    dl.setAttribute("href", dataStr);
-    dl.setAttribute("download", "bazarlist-backup.json");
-    dl.click();
+  addListBtn.addEventListener("click", () => {
+    const name = listNameInput.value.trim();
+    if (!name) {
+      alert("লিস্টের নাম লিখুন!");
+      return;
+    }
+
+    const quantity = prompt("পরিমাণ লিখুন (যেমন: 2 কেজি)") || "1";
+    const price = parseInt(prompt("মূল্য লিখুন (টাকায়)") || "0");
+
+    lists.push({ name, quantity, price });
+    listNameInput.value = "";
+    renderLists();
+  });
+
+  // Delete Item
+  window.deleteItem = (index) => {
+    if (confirm("আপনি কি মুছে ফেলতে চান?")) {
+      lists.splice(index, 1);
+      renderLists();
+    }
   };
 
-  // ✅ Import Backup
+  // Edit Item
+  window.editItem = (index) => {
+    const item = lists[index];
+    const newName = prompt("নতুন নাম লিখুন:", item.name) || item.name;
+    const newQuantity = prompt("পরিমাণ ঠিক করুন:", item.quantity) || item.quantity;
+    const newPrice = parseInt(prompt("নতুন মূল্য:", item.price)) || item.price;
+
+    lists[index] = { name: newName, quantity: newQuantity, price: newPrice };
+    renderLists();
+  };
+
+  // Backup Export
+  window.exportBackup = () => {
+    const blob = new Blob([JSON.stringify(lists)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "bazarlist_backup.json";
+    a.click();
+  };
+
+  // Import Backup
   window.importBackup = (event) => {
     const file = event.target.files[0];
     if (!file) return;
+
     const reader = new FileReader();
     reader.onload = (e) => {
-      try {
-        lists = JSON.parse(e.target.result);
-        saveLists();
-        renderLists();
-        alert("Backup restore সফল হয়েছে ✅");
-      } catch {
-        alert("ফাইল সঠিক নয় ❌");
-      }
+      lists = JSON.parse(e.target.result);
+      renderLists();
     };
     reader.readAsText(file);
   };
+
+  renderLists();
 });
