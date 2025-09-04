@@ -17,6 +17,7 @@
     <!-- নতুন লিস্ট -->
     <div class="add-list">
       <input type="text" id="listNameInput" placeholder="লিস্টের নাম লিখুন">
+      <input type="date" id="listDateInput">
       <button onclick="addList()">➕ লিস্ট যোগ করুন</button>
     </div>
 
@@ -25,6 +26,11 @@
       <button onclick="exportBackup()">📂 Backup Export (.json)</button>
       <input type="file" id="importFile" accept=".json" onchange="importBackup(event)" hidden>
       <button onclick="document.getElementById('importFile').click()">📂 Import Restore (.json)</button>
+    </div>
+
+    <!-- PDF Download -->
+    <div class="pdf-section">
+      <button onclick="downloadPDF()">⬇️ Download as PDF</button>
     </div>
 
     <!-- লিস্ট দেখানোর জায়গা -->
@@ -36,6 +42,7 @@
   </footer>
 
   <script src="app.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register("sw.js")
@@ -44,4 +51,4 @@
     }
   </script>
 </body>
-</html> 
+</html>
