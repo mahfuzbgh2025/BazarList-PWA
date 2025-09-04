@@ -1,91 +1,118 @@
-let lists = JSON.parse(localStorage.getItem("lists")) || [];
+let bazarLists = JSON.parse(localStorage.getItem("bazarLists")) || [];
 
 function saveData() {
-  localStorage.setItem("lists", JSON.stringify(lists));
-  renderLists();
+  localStorage.setItem("bazarLists", JSON.stringify(bazarLists));
 }
 
+// লিস্ট যোগ
 function addList() {
-  const name = document.getElementById("listNameInput").value.trim();
-  if (!name) return alert("লিস্টের নাম লিখুন!");
-  lists.push({ name, items: [] });
+  const listName = document.getElementById("listNameInput").value.trim();
+  if (!listName) return alert("লিস্টের নাম লিখুন");
+
+  bazarLists.push({
+    name: listName,
+    date: new Date().toLocaleDateString("bn-BD"),
+    items: []
+  });
+
   saveData();
+  renderLists();
   document.getElementById("listNameInput").value = "";
 }
 
+// প্রোডাক্ট যোগ
 function addItem(listIndex) {
-  const itemName = prompt("পণ্যের নাম লিখুন:");
-  const qty = parseInt(prompt("পরিমাণ লিখুন:"), 10);
-  const price = parseInt(prompt("প্রতি ইউনিট দাম লিখুন:"), 10);
-  const date = new Date().toLocaleDateString("bn-BD");
+  const name = prompt("পণ্যের নাম লিখুন:");
+  const qty = prompt("পরিমাণ লিখুন:");
+  const price = prompt("দাম লিখুন:");
 
-  if (!itemName || isNaN(qty) || isNaN(price)) return;
-  lists[listIndex].items.push({ itemName, qty, price, date });
+  if (!name || !qty || !price) return;
+
+  bazarLists[listIndex].items.push({
+    name,
+    qty: parseFloat(qty),
+    price: parseFloat(price)
+  });
+
   saveData();
+  renderLists();
 }
 
-function deleteList(index) {
-  if (confirm("আপনি কি লিস্ট মুছে ফেলতে চান?")) {
-    lists.splice(index, 1);
-    saveData();
-  }
-}
-
+// প্রোডাক্ট ডিলিট
 function deleteItem(listIndex, itemIndex) {
-  lists[listIndex].items.splice(itemIndex, 1);
+  bazarLists[listIndex].items.splice(itemIndex, 1);
   saveData();
+  renderLists();
 }
 
+// লিস্ট ডিলিট
+function deleteList(index) {
+  if (!confirm("লিস্ট মুছতে চান?")) return;
+  bazarLists.splice(index, 1);
+  saveData();
+  renderLists();
+}
+
+// লিস্ট রেন্ডার
 function renderLists() {
   const container = document.getElementById("listsContainer");
   container.innerHTML = "";
-  lists.forEach((list, i) => {
-    let total = list.items.reduce((sum, it) => sum + (it.qty * it.price), 0);
-    let html = `<div class="list"><h3>${list.name} - মোট: ${total} টাকা 
-                <button onclick="deleteList(${i})">❌ মুছুন</button>
-                <button onclick="addItem(${i})">➕ পণ্য যোগ করুন</button></h3>`;
-    list.items.forEach((item, j) => {
-      html += `<p>${item.itemName} - ${item.qty} × ${item.price} = ${item.qty * item.price} টাকা (${item.date})
-               <button onclick="deleteItem(${i},${j})">❌</button></p>`;
-    });
-    html += "</div>";
-    container.innerHTML += html;
+
+  bazarLists.forEach((list, listIndex) => {
+    let total = list.items.reduce((sum, item) => sum + (item.qty * item.price), 0);
+
+    let div = document.createElement("div");
+    div.className = "list-box";
+    div.innerHTML = `
+      <h2>${list.name} <small>(${list.date})</small></h2>
+      <button onclick="addItem(${listIndex})">➕ প্রোডাক্ট যোগ</button>
+      <button onclick="deleteList(${listIndex})">❌ লিস্ট ডিলিট</button>
+      <ul>
+        ${list.items.map((item, i) => `
+          <li>
+            ${item.name} - ${item.qty} × ${item.price} = ${item.qty * item.price} টাকা
+            <button onclick="deleteItem(${listIndex}, ${i})">❌</button>
+          </li>
+        `).join("")}
+      </ul>
+      <p><strong>মোট: ${total} টাকা</strong></p>
+    `;
+    container.appendChild(div);
   });
 }
 
+// Backup Export
 function exportBackup() {
-  const data = JSON.stringify(lists);
-  const blob = new Blob([data], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
+  const blob = new Blob([JSON.stringify(bazarLists, null, 2)], { type: "application/json" });
   const a = document.createElement("a");
-  a.href = url;
-  a.download = "backup.json";
+  a.href = URL.createObjectURL(blob);
+  a.download = "bazarlist-backup.json";
   a.click();
 }
 
+// Backup Import
 function importBackup(event) {
   const file = event.target.files[0];
   if (!file) return;
+
   const reader = new FileReader();
   reader.onload = e => {
-    lists = JSON.parse(e.target.result);
+    bazarLists = JSON.parse(e.target.result);
     saveData();
+    renderLists();
   };
   reader.readAsText(file);
 }
 
+// PDF Download
 function downloadPDF() {
-  const element = document.createElement("div");
-  lists.forEach(list => {
-    let total = list.items.reduce((sum, it) => sum + (it.qty * it.price), 0);
-    element.innerHTML += `<h2>${list.name} (মোট: ${total} টাকা)</h2>`;
-    list.items.forEach(it => {
-      element.innerHTML += `<p>${it.itemName} - ${it.qty} × ${it.price} = ${it.qty * it.price} টাকা (${it.date})</p>`;
-    });
-    element.innerHTML += "<hr>";
-  });
-  const opt = { margin: 1, filename: "BazarList.pdf", html2canvas: {}, jsPDF: { unit: "mm", format: "a4", orientation: "portrait" } };
-  html2pdf().from(element).set(opt).save();
+  const element = document.getElementById("listsContainer");
+  if (!element.innerHTML.trim()) {
+    alert("কোনো লিস্ট নেই ডাউনলোড করার মতো।");
+    return;
+  }
+  html2pdf().from(element).save("bazarlist.pdf");
 }
 
+// প্রথমবার লোড হলে render
 renderLists();
