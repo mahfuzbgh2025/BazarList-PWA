@@ -28,12 +28,27 @@
       <button onclick="exportBackup()">📂 Backup Export (.json)</button>
       <input type="file" id="importFile" accept=".json" onchange="importBackup(event)" hidden>
       <button onclick="document.getElementById('importFile').click()">📂 Import Restore (.json)</button>
-      <button onclick="downloadPDF()">📄 Download PDF</button>
+      <button class="pdf-btn" onclick="downloadPDF()">📄 Download PDF</button>
     </div>
 
     <!-- লিস্ট দেখানোর জায়গা -->
     <div id="listsContainer"></div>
   </main>
+
+  <!-- প্রোডাক্ট যোগ করার popup -->
+  <div id="productFormModal" class="modal">
+    <div class="modal-content">
+      <h3>➕ নতুন প্রোডাক্ট যোগ করুন</h3>
+      <input type="text" id="productName" placeholder="প্রোডাক্ট নাম" required>
+      <input type="number" id="productQty" placeholder="পরিমাণ" min="1" step="0.1" required>
+      <input type="number" id="productPrice" placeholder="প্রতি ইউনিট দাম (টাকা)" min="1" required>
+      <input type="date" id="productDate" required>
+      <div class="modal-buttons">
+        <button onclick="saveProduct()">✅ সেভ</button>
+        <button onclick="closeProductForm()">❌ বাতিল</button>
+      </div>
+    </div>
+  </div>
 
   <footer>
     <p>© 2025 BazarList | Developed by Mahfuz Bgh</p>
