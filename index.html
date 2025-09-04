@@ -6,10 +6,10 @@
   <title>BazarList</title>
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
   <header>
-    <img src="android-launchericon-192-192.png" alt="BazarList Logo" class="logo">
     <h1>🛒 BazarList</h1>
     <p>দৈনন্দিন বাজারের তালিকা রাখুন সহজে।</p>
   </header>
@@ -37,13 +37,7 @@
     <p>© 2025 BazarList | Developed by Mahfuz Bgh</p>
   </footer>
 
-  <!-- html2pdf লাইব্রেরি -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-
-  <!-- main app js -->
   <script src="app.js"></script>
-
-  <!-- service worker -->
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register("sw.js")
