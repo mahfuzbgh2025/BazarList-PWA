@@ -1,33 +1,39 @@
+// PDF ডাউনলোড
 async function downloadPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
-  let y = 20;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(16);
-  doc.text("🛒 BazarList রিপোর্ট", 20, y);
-  y += 10;
+  // লোগো যোগ করা
+  const logo = new Image();
+  logo.src = "logo.png"; // আপনার রিপোতে আপলোড করা logo.png ব্যবহার হবে
 
-  const allLists = JSON.parse(localStorage.getItem("bazarLists")) || [];
+  logo.onload = function () {
+    doc.addImage(logo, "PNG", 160, 10, 30, 30); // ডানদিকে লোগো
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("🛒 BazarList রিপোর্ট", 20, 25);
 
-  allLists.forEach(list => {
-    doc.setFontSize(14);
-    doc.text(`লিস্ট: ${list.name}`, 20, y);
-    y += 8;
+    let y = 50; // লিস্ট শুরুর জায়গা
 
-    let total = 0;
-    list.items.forEach(item => {
-      let line = `${item.name} - ${item.quantity} (${item.price} টাকা) তারিখ: ${item.date}`;
-      doc.setFontSize(12);
-      doc.text(line, 25, y);
-      y += 7;
-      total += parseFloat(item.price) || 0;
+    lists.forEach(list => {
+      doc.setFontSize(14);
+      doc.text(`লিস্ট: ${list.name}`, 20, y);
+      y += 8;
+
+      let total = 0;
+      list.items.forEach(item => {
+        let line = `${item.name} - ${item.qty} (${item.price} টাকা) তারিখ: ${item.date}`;
+        doc.setFontSize(12);
+        doc.text(line, 25, y);
+        y += 7;
+        total += item.qty * item.price;
+      });
+
+      doc.setFontSize(13);
+      doc.text(`মোট: ${total} টাকা`, 25, y);
+      y += 12;
     });
 
-    doc.setFontSize(13);
-    doc.text(`মোট: ${total} টাকা`, 25, y);
-    y += 12;
-  });
-
-  doc.save("bazarlist.pdf");
+    doc.save("bazarlist.pdf");
+  };
 }
