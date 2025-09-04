@@ -1,140 +1,60 @@
-/* Basic Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Noto Sans Bengali", sans-serif;
-}
-
 body {
-  background: linear-gradient(135deg, #0f2027, #2c5364);
-  color: #fff;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: linear-gradient(180deg, #1e3c72, #2a5298);
+  color: white;
   text-align: center;
-  padding: 15px;
-  min-height: 100vh;
 }
 
-/* Header */
 header {
-  background: #004080;
+  background: #003366;
   padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 
-header h1 {
+h1 {
+  margin: 0;
   font-size: 28px;
 }
 
-header p {
-  font-size: 14px;
-  opacity: 0.8;
+main {
+  padding: 15px;
 }
 
-/* Input + Button */
-.add-list {
-  margin-bottom: 15px;
-}
-
-.add-list input {
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  width: 65%;
-  font-size: 14px;
-}
-
-.add-list button {
-  background: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  margin-left: 5px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.add-list button:hover {
-  background: #218838;
-}
-
-/* Backup Buttons */
-.backup-section {
+.add-list, .backup-section {
   margin: 15px 0;
 }
 
-.backup-section button {
-  background: #ff6600;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 8px;
+input, button {
   margin: 5px;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+}
+
+input {
+  width: 200px;
+}
+
+button {
+  background: #ff4d4d;
+  color: white;
   cursor: pointer;
-  transition: 0.3s;
 }
 
-.backup-section button:hover {
-  background: #e65c00;
+button:hover {
+  background: #e60000;
 }
 
-/* List Items */
 .list-item {
-  background: #1e3c72;
-  margin: 10px auto;
-  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  margin: 15px 0;
   border-radius: 8px;
   text-align: left;
+}
+
+.product-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-}
-
-.list-item strong {
-  font-size: 16px;
-}
-
-.list-item button {
-  background: #dc3545;
-  border: none;
-  color: white;
-  padding: 5px 10px;
-  margin-left: 5px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.3s;
-  font-size: 12px;
-}
-
-.list-item button:hover {
-  background: #c82333;
-}
-
-.list-item button:first-of-type {
-  background: #007bff;
-}
-
-.list-item button:first-of-type:hover {
-  background: #0056b3;
-}
-
-/* Total */
-#totalAmount {
-  margin-top: 15px;
-  font-size: 18px;
-  font-weight: bold;
-  background: #333;
-  padding: 10px;
-  border-radius: 8px;
-}
-
-/* Footer */
-footer {
-  margin-top: 20px;
-  font-size: 12px;
-  opacity: 0.7;
+  margin: 5px 0;
 }
