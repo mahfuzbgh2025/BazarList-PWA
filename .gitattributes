@@ -1,0 +1,21 @@
+# Auto detect text files and normalize line endings
+* text=auto
+
+# Set default language detection
+*.js linguist-language=JavaScript
+*.css linguist-language=CSS
+*.html linguist-language=HTML
+*.json linguist-language=JSON
+
+# Treat documentation files as text
+*.md text
+*.txt text
+LICENSE text
+
+# Force binary for images
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
