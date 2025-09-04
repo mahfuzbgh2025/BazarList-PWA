@@ -1,149 +1,148 @@
 let lists = JSON.parse(localStorage.getItem("bazarLists")) || [];
-let currentListId = null;
 
-// লিস্ট রেন্ডার
-function renderLists() {
-  const container = document.getElementById("listsContainer");
-  container.innerHTML = "";
-
-  lists.forEach(list => {
-    let total = list.items.reduce((sum, item) => sum + (item.qty * item.price), 0);
-
-    const div = document.createElement("div");
-    div.className = "list";
-
-    div.innerHTML = `
-      <h2>${list.name}</h2>
-      <button onclick="showProductForm(${list.id})">➕ প্রোডাক্ট যোগ করুন</button>
-      <ul>
-        ${list.items.map(item => `
-          <li>
-            ${item.name} - ${item.qty} x ${item.price} = ${item.qty * item.price} টাকা
-            <small>(${item.date})</small>
-            <button onclick="editProduct(${list.id}, ${item.id})">✏️ Edit</button>
-            <button onclick="deleteProduct(${list.id}, ${item.id})">❌ Delete</button>
-          </li>
-        `).join("")}
-      </ul>
-      <p><b>মোট:</b> ${total} টাকা</p>
-    `;
-
-    container.appendChild(div);
-  });
-
+function saveToLocalStorage() {
   localStorage.setItem("bazarLists", JSON.stringify(lists));
-}
-
-// নতুন লিস্ট যোগ
-function addList() {
-  const name = document.getElementById("listNameInput").value.trim();
-  if (!name) return alert("লিস্টের নাম লিখুন!");
-
-  lists.push({ id: Date.now(), name, items: [] });
-  document.getElementById("listNameInput").value = "";
   renderLists();
 }
 
-// প্রোডাক্ট ফর্ম দেখানো
-function showProductForm(listId) {
-  currentListId = listId;
-  document.getElementById("productFormModal").style.display = "block";
+function addList() {
+  const name = document.getElementById("listNameInput").value.trim();
+  if (!name) return alert("লিস্টের নাম লিখুন!");
+  lists.push({ name, products: [] });
+  document.getElementById("listNameInput").value = "";
+  saveToLocalStorage();
 }
 
-// প্রোডাক্ট ফর্ম বন্ধ করা
+function addProduct(listIndex) {
+  const modal = document.createElement("div");
+  modal.className = "modal";
+  modal.innerHTML = `
+    <h3>নতুন প্রোডাক্ট যোগ করুন</h3>
+    <input id="productName" placeholder="প্রোডাক্ট নাম">
+    <input id="productQty" type="number" placeholder="পরিমাণ">
+    <input id="productPrice" type="number" placeholder="দাম (৳)">
+    <input id="productDate" type="date">
+    <button onclick="saveProduct(${listIndex})">✅ সেভ</button>
+    <button onclick="closeProductForm()">❌ বাতিল</button>
+  `;
+  document.body.appendChild(modal);
+}
+
+function saveProduct(listIndex) {
+  const name = document.getElementById("productName").value.trim();
+  const qty = parseFloat(document.getElementById("productQty").value);
+  const price = parseFloat(document.getElementById("productPrice").value);
+  const date = document.getElementById("productDate").value;
+  if (!name || isNaN(qty) || isNaN(price)) return alert("সব ঘর পূরণ করুন!");
+
+  lists[listIndex].products.push({ name, qty, price, date });
+  closeProductForm();
+  saveToLocalStorage();
+}
+
 function closeProductForm() {
-  document.getElementById("productFormModal").style.display = "none";
-  document.getElementById("productName").value = "";
-  document.getElementById("productQty").value = "";
-  document.getElementById("productPrice").value = "";
-  document.getElementById("productDate").value = "";
+  document.querySelector(".modal").remove();
 }
 
-// প্রোডাক্ট সেভ করা
-function saveProduct() {
+function deleteProduct(listIndex, productIndex) {
+  lists[listIndex].products.splice(productIndex, 1);
+  saveToLocalStorage();
+}
+
+function editProduct(listIndex, productIndex) {
+  const product = lists[listIndex].products[productIndex];
+  const modal = document.createElement("div");
+  modal.className = "modal";
+  modal.innerHTML = `
+    <h3>প্রোডাক্ট এডিট করুন</h3>
+    <input id="productName" value="${product.name}">
+    <input id="productQty" type="number" value="${product.qty}">
+    <input id="productPrice" type="number" value="${product.price}">
+    <input id="productDate" type="date" value="${product.date}">
+    <button onclick="updateProduct(${listIndex}, ${productIndex})">✅ আপডেট</button>
+    <button onclick="closeProductForm()">❌ বাতিল</button>
+  `;
+  document.body.appendChild(modal);
+}
+
+function updateProduct(listIndex, productIndex) {
   const name = document.getElementById("productName").value.trim();
   const qty = parseFloat(document.getElementById("productQty").value);
   const price = parseFloat(document.getElementById("productPrice").value);
   const date = document.getElementById("productDate").value;
 
-  if (!name || isNaN(qty) || isNaN(price) || !date) {
-    alert("সব ফিল্ড পূরণ করুন!");
-    return;
-  }
+  if (!name || isNaN(qty) || isNaN(price)) return alert("সব ঘর পূরণ করুন!");
 
-  const list = lists.find(l => l.id === currentListId);
-  list.items.push({ id: Date.now(), name, qty, price, date });
-
+  lists[listIndex].products[productIndex] = { name, qty, price, date };
   closeProductForm();
-  renderLists();
+  saveToLocalStorage();
 }
 
-// প্রোডাক্ট ডিলিট
-function deleteProduct(listId, productId) {
-  const list = lists.find(l => l.id === listId);
-  list.items = list.items.filter(item => item.id !== productId);
-  renderLists();
+function deleteList(index) {
+  if (confirm("আপনি কি নিশ্চিত লিস্ট মুছতে চান?")) {
+    lists.splice(index, 1);
+    saveToLocalStorage();
+  }
 }
 
-// প্রোডাক্ট এডিট
-function editProduct(listId, productId) {
-  const list = lists.find(l => l.id === listId);
-  const item = list.items.find(i => i.id === productId);
-
-  document.getElementById("productName").value = item.name;
-  document.getElementById("productQty").value = item.qty;
-  document.getElementById("productPrice").value = item.price;
-  document.getElementById("productDate").value = item.date;
-
-  deleteProduct(listId, productId); // আগেরটা মুছে ফেলে নতুন যোগ হবে
-  showProductForm(listId);
+function renderLists() {
+  const container = document.getElementById("listsContainer");
+  container.innerHTML = "";
+  lists.forEach((list, i) => {
+    let total = list.products.reduce((sum, p) => sum + p.price, 0);
+    const listDiv = document.createElement("div");
+    listDiv.className = "list";
+    listDiv.innerHTML = `
+      <h2>${list.name} - মোট: ${total} টাকা</h2>
+      <button onclick="addProduct(${i})">➕ প্রোডাক্ট যোগ করুন</button>
+      <button onclick="deleteList(${i})">🗑️ লিস্ট ডিলিট</button>
+      <ul>
+        ${list.products.map((p, j) => `
+          <li>
+            ${p.name} (${p.qty}) - ${p.price} টাকা 
+            <small>${p.date || ""}</small>
+            <span>
+              <button onclick="editProduct(${i}, ${j})">✏️</button>
+              <button onclick="deleteProduct(${i}, ${j})">❌</button>
+            </span>
+          </li>
+        `).join("")}
+      </ul>
+    `;
+    container.appendChild(listDiv);
+  });
 }
 
-// Backup Export
+/* Backup */
 function exportBackup() {
-  const blob = new Blob([JSON.stringify(lists, null, 2)], { type: "application/json" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "bazarlist_backup.json";
-  link.click();
+  const blob = new Blob([JSON.stringify(lists)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "bazar_backup.json";
+  a.click();
 }
 
-// Backup Import
 function importBackup(event) {
   const file = event.target.files[0];
   if (!file) return;
-
   const reader = new FileReader();
   reader.onload = e => {
     lists = JSON.parse(e.target.result);
-    renderLists();
+    saveToLocalStorage();
   };
   reader.readAsText(file);
 }
 
-// PDF Download
+/* PDF Download */
 function downloadPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-
-  let y = 10;
-  doc.text("🛒 BazarList", 10, y);
-  y += 10;
-
-  lists.forEach(list => {
-    doc.text(`📌 ${list.name}`, 10, y);
-    y += 10;
-    list.items.forEach(item => {
-      doc.text(`- ${item.name} | ${item.qty} x ${item.price} = ${item.qty * item.price} টাকা (${item.date})`, 10, y);
-      y += 8;
-    });
-    let total = list.items.reduce((sum, i) => sum + (i.qty * i.price), 0);
-    doc.text(`মোট: ${total} টাকা`, 10, y);
-    y += 12;
-  });
-
-  doc.save("bazarlist.pdf");
+  const content = document.getElementById("listsContainer").innerText;
+  const blob = new Blob([content], { type: "application/pdf" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "bazarlist.pdf";
+  a.click();
 }
 
-// প্রথমবার লোড হলে রেন্ডার
 renderLists();
