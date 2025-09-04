@@ -32,7 +32,7 @@ input, button {
 }
 
 input {
-  width: 200px;
+  width: 180px;
 }
 
 button {
@@ -53,8 +53,15 @@ button:hover {
   text-align: left;
 }
 
+.list-item h3 {
+  margin-top: 0;
+  color: #ffcc00;
+}
+
 .product-row {
   display: flex;
   justify-content: space-between;
   margin: 5px 0;
+  padding: 5px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
 }
