@@ -2,58 +2,77 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #0d1b2a;
-  color: white;
-  text-align: center;
+  background: #f0f2f5;
+  color: #333;
 }
 
 header {
-  background: #1b263b;
-  padding: 15px;
+  background: #003366;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
 }
 
-.logo {
-  width: 80px;
-  height: 80px;
-}
-
-h1 {
-  margin: 10px 0;
+header h1 {
+  margin: 0;
   font-size: 24px;
+}
+
+header p {
+  margin: 5px 0 0;
+}
+
+.add-list, .backup-section {
+  text-align: center;
+  margin: 15px;
 }
 
 .add-list input {
   padding: 8px;
-  margin: 5px;
+  font-size: 14px;
 }
 
-.add-list button {
+.add-list button, .backup-section button {
   padding: 8px 12px;
-  background: red;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button {
   margin: 5px;
-  padding: 8px 12px;
-  background: #e63946;
-  color: white;
-  border: none;
+  font-size: 14px;
   cursor: pointer;
-  border-radius: 4px;
+  border: none;
+  border-radius: 5px;
+  background: #e74c3c;
+  color: #fff;
 }
 
-#listsContainer {
-  margin: 20px;
-  padding: 10px;
-  background: #415a77;
+.list-box {
+  background: #fff;
+  margin: 10px auto;
+  padding: 15px;
   border-radius: 8px;
+  max-width: 600px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.list-box h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.list-box ul {
+  list-style: none;
+  padding: 0;
+}
+
+.list-box li {
+  background: #f9f9f9;
+  margin: 5px 0;
+  padding: 6px;
+  border-radius: 5px;
 }
 
 footer {
-  background: #1b263b;
+  background: #003366;
+  color: #fff;
+  text-align: center;
   padding: 10px;
   margin-top: 20px;
 }
