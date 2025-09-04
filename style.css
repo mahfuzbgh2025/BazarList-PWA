@@ -1,14 +1,29 @@
-/* ব্যাকগ্রাউন্ডে আপনার logo.png ব্যবহার */
+/* Body Background with Watermark */
 body {
   font-family: "Noto Sans Bengali", sans-serif;
   margin: 0;
   padding: 0;
-  background: url("logo.png") no-repeat center center fixed;
-  background-size: cover;
-  color: white;
   min-height: 100vh;
+  color: white;
+  position: relative;
+  background: #1c1c1c; /* fallback background */
 }
 
+/* Watermark Logo */
+body::before {
+  content: "";
+  background: url("logo.png") no-repeat center center;
+  background-size: 300px;
+  opacity: 0.08; /* হালকা ফেড */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+/* Header */
 header {
   background: rgba(0, 0, 50, 0.85);
   padding: 20px;
@@ -21,36 +36,41 @@ header h1 {
   font-size: 28px;
 }
 
-main {
-  padding: 15px;
+.logo {
+  width: 120px;
+  display: block;
+  margin: 0 auto 10px;
 }
 
-.add-list input {
-  padding: 8px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: none;
-}
-
-.add-list button {
-  padding: 8px 12px;
-  margin-left: 5px;
-  background: crimson;
+/* Buttons */
+button {
+  background: #e74c3c;
   color: white;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.backup-section button {
-  padding: 8px 12px;
+  padding: 10px 15px;
   margin: 5px;
-  background: orange;
-  border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
 }
 
+button:hover {
+  opacity: 0.9;
+}
+
+/* PDF Button আলাদা Style */
+button.pdf-btn {
+  background: #3498db; /* নীল */
+  color: #fff;
+  font-weight: bold;
+}
+
+button.pdf-btn:hover {
+  background: #2980b9; /* গাঢ় নীল */
+}
+
+/* List Section */
 .list {
   background: rgba(0,0,0,0.6);
   margin: 15px 0;
@@ -63,14 +83,6 @@ main {
   color: #ffd700;
 }
 
-.list button {
-  margin-left: 5px;
-  padding: 5px 8px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
 .list ul {
   list-style: none;
   padding: 0;
@@ -80,6 +92,7 @@ main {
   margin: 5px 0;
 }
 
+/* Footer */
 footer {
   background: rgba(0,0,50,0.85);
   text-align: center;
