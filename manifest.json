@@ -1,10 +1,13 @@
 {
   "name": "BazarList",
   "short_name": "BazarList",
-  "start_url": ".",
+  "description": "দৈনন্দিন বাজারের তালিকা রাখুন সহজে",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#0d1b2a",
-  "theme_color": "#1b263b",
+  "background_color": "#003366",
+  "theme_color": "#003366",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "android-launchericon-48-48.png",
