@@ -1,45 +1,23 @@
-const CACHE_NAME = "bazarlist-cache-v1";
-const urlsToCache = [
-  "./",
-  "./index.html",
-  "./style.css",
-  "./app.js",
-  "./manifest.json",
-  "./offline.html",
-  "./android-launchericon-192-192.png"
-];
-
-// Install
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      console.log("Caching files...");
-      return cache.addAll(urlsToCache);
+self.addEventListener("install", (e) => {
+  e.waitUntil(
+    caches.open("bazarlist-cache").then((cache) => {
+      return cache.addAll([
+        "/BazarList-PWA/",
+        "/BazarList-PWA/index.html",
+        "/BazarList-PWA/style.css",
+        "/BazarList-PWA/app.js",
+        "/BazarList-PWA/manifest.json",
+        "/BazarList-PWA/android-launchericon-192-192.png",
+        "/BazarList-PWA/android-launchericon-512-512.png"
+      ]);
     })
   );
 });
 
-// Fetch
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request).catch(() => caches.match("./offline.html"));
-    })
-  );
-});
-
-// Activate (পুরোনো cache মুছে ফেলা)
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys => {
-      return Promise.all(
-        keys.map(key => {
-          if (key !== CACHE_NAME) {
-            console.log("Old cache removed:", key);
-            return caches.delete(key);
-          }
-        })
-      );
+self.addEventListener("fetch", (e) => {
+  e.respondWith(
+    caches.match(e.request).then((response) => {
+      return response || fetch(e.request);
     })
   );
 });
