@@ -1,5 +1,5 @@
 /* PWA Service Worker */
-const CACHE_VERSION = "v4.0.0";
+const CACHE_VERSION = "v6.0.0";
 const STATIC_CACHE = `bl-static-${CACHE_VERSION}`;
 const ASSETS = [
   "./",
@@ -26,12 +26,10 @@ self.addEventListener("activate", (e)=>{
   })());
 });
 
-// network falling back to cache for html; cache-first for others
 self.addEventListener("fetch", (e)=>{
   const req = e.request;
   const url = new URL(req.url);
 
-  // Only handle same-origin
   if(url.origin !== location.origin) return;
 
   if(req.mode === "navigate"){
@@ -49,7 +47,6 @@ self.addEventListener("fetch", (e)=>{
     return;
   }
 
-  // cache-first for static
   e.respondWith((async ()=>{
     const cached = await caches.match(req);
     if(cached) return cached;
