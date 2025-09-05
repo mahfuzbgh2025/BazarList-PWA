@@ -1,46 +1,62 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #0d1b2a;
-  color: white;
-  margin: 0;
-  padding: 0;
-  text-align: center;
+:root{
+  --bg:#0b1d3a;
+  --card:#102a54;
+  --text:#eef3ff;
+  --muted:#b6c4e6;
+  --accent:#ff6b6b;
+  --ok:#16a34a;
+  --btn:#ef4444;
+  --blue:#2563eb;
 }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#0f172a;color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Noto Sans Bengali","Noto Sans",sans-serif}
+.site-header{background:var(--bg);padding:18px 14px;border-bottom:1px solid #1f3162}
+.brand{display:flex;align-items:center;gap:10px}
+.brand .logo{font-size:28px}
+.brand h1{margin:0;font-size:26px}
+.site-header p{margin:6px 0 0;color:var(--muted)}
 
-header {
-  background: #1b263b;
-  padding: 20px;
-}
+.container{max-width:980px;margin:16px auto;padding:0 12px}
+.add-list{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.add-list input{flex:1;min-width:240px;padding:10px 12px;border-radius:10px;border:1px solid #24417b;background:#0d1833;color:var(--text)}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 18px}
+.btn{border:0;border-radius:12px;padding:10px 14px;cursor:pointer;color:#fff}
+.btn.primary{background:var(--ok)}
+.btn.warn{background:var(--btn)}
+.btn.blue{background:var(--blue)}
+.btn.small{padding:6px 9px;border-radius:10px;font-size:13px}
+.btn.ghost{background:#1b2a52;border:1px solid #2a4383}
+.btn:hover{filter:brightness(1.04)}
 
-.logo {
-  width: 80px;
-  display: block;
-  margin: 0 auto 10px;
-}
+.lists{display:flex;flex-direction:column;gap:16px}
+.card{background:var(--card);border:1px solid #1f3162;border-radius:16px;padding:12px}
+.card header{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.card h3{margin:0 0 6px}
+.meta{color:var(--muted);font-size:14px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.row input,.row select{padding:8px 10px;border-radius:10px;border:1px solid #27417d;background:#0d1833;color:var(--text)}
+.items{margin-top:8px}
+.item{display:grid;grid-template-columns:1fr 70px 90px 120px auto;gap:8px;align-items:center;padding:8px;border-bottom:1px dashed #2a447f}
+.item:last-child{border-bottom:0}
+.item .price{text-align:right}
+.item .qty{text-align:center}
+.badge{background:#223a75;border:1px solid #3558a6;border-radius:999px;padding:2px 8px;font-size:12px;margin-left:8px}
 
-button {
-  background: #e63946;
-  color: white;
-  padding: 8px 12px;
-  margin: 5px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
+.tot{display:flex;justify-content:flex-end;margin-top:8px}
+.total{background:#173065;padding:8px 12px;border-radius:10px;border:1px solid #2a4a8a}
 
-button:hover {
-  background: #d62828;
-}
+.site-footer{margin:24px 0 40px;text-align:center;color:var(--muted)}
+.hidden{display:none}
 
-.list-box {
-  background: #415a77;
-  margin: 10px;
-  padding: 10px;
-  border-radius: 8px;
-  text-align: left;
+/* print styles */
+@media print{
+  body{background:#fff;color:#000}
+  .site-header,.tools,.add-list,.site-footer{display:none}
+  .print-area{display:block}
 }
-
-ul {
-  list-style: none;
-  padding: 0;
-}
+.print-area{display:none}
+.print-title{font-size:22px;margin:0 0 6px}
+.print-date{color:#444;margin:0 0 12px}
+.print-table{width:100%;border-collapse:collapse}
+.print-table th,.print-table td{border:1px solid #999;padding:6px 8px;text-align:left}
+.print-right{text-align:right}
