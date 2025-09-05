@@ -1,105 +1,57 @@
-/* সাধারণ সেটিং */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #f0f2f5;
-  color: #333;
+  background: #0d1b2a;
+  color: white;
+  text-align: center;
 }
 
 header {
-  background: #003366;
-  color: #fff;
+  background: #1b263b;
   padding: 20px;
-  text-align: center;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 24px;
+header .logo {
+  width: 80px;
+  height: 80px;
 }
 
-header p {
-  margin: 5px 0 0;
+h1 {
+  margin: 10px 0 5px;
 }
 
 .add-list, .backup-section {
-  text-align: center;
   margin: 15px;
 }
 
-.add-list input {
-  padding: 8px;
-  font-size: 14px;
-}
-
-.add-list button, .backup-section button {
-  padding: 8px 12px;
-  margin: 5px;
-  font-size: 14px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background: #e74c3c;
-  color: #fff;
-  transition: 0.2s;
-}
-
-.add-list button:hover, .backup-section button:hover {
-  opacity: 0.85;
-}
-
-/* প্রতিটি লিস্টের জন্য */
-.list-box {
-  background: #fff;
-  margin: 10px auto;
-  padding: 15px;
-  border-radius: 8px;
-  max-width: 600px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  text-align: left;
-}
-
-.list-box h2 {
-  margin: 0 0 10px;
-  font-size: 18px;
-  color: #003366;
-}
-
-.list-box ul {
-  list-style: none;
-  padding: 0;
-}
-
-.list-box li {
-  background: #f9f9f9;
-  margin: 5px 0;
-  padding: 6px;
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.list-box li button {
-  background: #e63946;
-  color: #fff;
-  border: none;
-  padding: 4px 8px;
-  margin-left: 5px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.list-box li button:hover {
-  opacity: 0.8;
-}
-
-/* Footer */
-footer {
-  background: #003366;
-  color: #fff;
-  text-align: center;
+input, button {
   padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+  border: none;
+}
+
+button {
+  cursor: pointer;
+  background: crimson;
+  color: white;
+  font-weight: bold;
+}
+
+button:hover {
+  background: darkred;
+}
+
+.list {
+  background: #415a77;
+  margin: 15px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+footer {
   margin-top: 20px;
+  padding: 10px;
+  background: #1b263b;
 }
