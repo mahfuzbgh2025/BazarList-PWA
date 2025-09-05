@@ -1,43 +1,39 @@
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
   background: #0d1b2a;
-  color: #fff;
+  color: white;
+  margin: 0;
+  padding: 0;
   text-align: center;
 }
 
 header {
   background: #1b263b;
-  padding: 15px;
+  padding: 20px;
 }
 
-header .logo {
+.logo {
   width: 80px;
-  height: 80px;
   display: block;
-  margin: auto;
-}
-
-h1 {
-  margin: 5px 0;
-}
-
-.add-list input {
-  padding: 8px;
-  margin: 5px;
+  margin: 0 auto 10px;
 }
 
 button {
+  background: #e63946;
+  color: white;
   padding: 8px 12px;
   margin: 5px;
-  background: #e63946;
-  color: #fff;
   border: none;
   border-radius: 5px;
+  cursor: pointer;
 }
 
-.list {
-  background: #1b263b;
+button:hover {
+  background: #d62828;
+}
+
+.list-box {
+  background: #415a77;
   margin: 10px;
   padding: 10px;
   border-radius: 8px;
