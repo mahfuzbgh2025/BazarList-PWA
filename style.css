@@ -1,57 +1,50 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 0;
   background: #0d1b2a;
-  color: white;
+  color: #fff;
   text-align: center;
 }
 
 header {
   background: #1b263b;
-  padding: 20px;
+  padding: 15px;
 }
 
 header .logo {
   width: 80px;
   height: 80px;
+  display: block;
+  margin: auto;
 }
 
 h1 {
-  margin: 10px 0 5px;
+  margin: 5px 0;
 }
 
-.add-list, .backup-section {
-  margin: 15px;
-}
-
-input, button {
-  padding: 10px;
+.add-list input {
+  padding: 8px;
   margin: 5px;
-  border-radius: 5px;
-  border: none;
 }
 
 button {
-  cursor: pointer;
-  background: crimson;
-  color: white;
-  font-weight: bold;
-}
-
-button:hover {
-  background: darkred;
+  padding: 8px 12px;
+  margin: 5px;
+  background: #e63946;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
 }
 
 .list {
-  background: #415a77;
-  margin: 15px;
+  background: #1b263b;
+  margin: 10px;
   padding: 10px;
   border-radius: 8px;
+  text-align: left;
 }
 
-footer {
-  margin-top: 20px;
-  padding: 10px;
-  background: #1b263b;
+ul {
+  list-style: none;
+  padding: 0;
 }
