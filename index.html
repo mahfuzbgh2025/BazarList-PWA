@@ -4,8 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BazarList</title>
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- Manifest -->
   <link rel="manifest" href="manifest.json">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="android-launchericon-192-192.png">
 </head>
 <body>
   <header>
@@ -37,12 +44,13 @@
     <p>© 2025 BazarList | Developed by Mahfuz Bgh</p>
   </footer>
 
+  <!-- JavaScript -->
   <script src="app.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register("sw.js")
-        .then(reg => console.log("Service Worker registered:", reg.scope))
-        .catch(err => console.log("Service Worker failed:", err));
+        .then(reg => console.log("✅ Service Worker registered:", reg.scope))
+        .catch(err => console.log("❌ Service Worker failed:", err));
     }
   </script>
 </body>
