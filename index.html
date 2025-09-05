@@ -15,13 +15,11 @@
   </header>
 
   <main>
-    <!-- নতুন লিস্ট -->
     <div class="add-list">
       <input type="text" id="listNameInput" placeholder="লিস্টের নাম লিখুন">
       <button onclick="addList()">➕ লিস্ট যোগ করুন</button>
     </div>
 
-    <!-- Backup/Restore -->
     <div class="backup-section">
       <button onclick="exportBackup()">📂 Backup Export (.json)</button>
       <input type="file" id="importFile" accept=".json" onchange="importBackup(event)" hidden>
@@ -29,7 +27,6 @@
       <button onclick="downloadPDF()">📄 Download PDF</button>
     </div>
 
-    <!-- লিস্ট দেখানোর জায়গা -->
     <div id="listsContainer"></div>
   </main>
 
@@ -39,10 +36,10 @@
 
   <script src="app.js"></script>
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register("sw.js")
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./sw.js")
         .then(reg => console.log("Service Worker registered:", reg.scope))
-        .catch(err => console.log("Service Worker failed:", err));
+        .catch(err => console.error("SW registration failed:", err));
     }
   </script>
 </body>
