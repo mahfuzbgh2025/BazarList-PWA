@@ -5,6 +5,7 @@ const urlsToCache = [
   "./style.css",
   "./app.js",
   "./manifest.json",
+  "./offline.html",
   "./android-launchericon-192-192.png",
   "./android-launchericon-512-512.png"
 ];
